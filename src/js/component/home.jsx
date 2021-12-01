@@ -30,10 +30,14 @@ const Home = () => {
 		fetch("https://assets.breatheco.de/apis/fake/todos/user/jesuscano", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify([])
-		}).then(response => {
-			return response.json();
-		});
+			body: []
+		})
+			.then(response => {
+				return response.json();
+			})
+			.catch(error => {
+				setError(error);
+			});
 	}, []);
 
 	//ADDING NEW ITEMS TO THE API
