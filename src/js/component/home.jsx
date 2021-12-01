@@ -23,8 +23,6 @@ const Home = () => {
 		setItems(newArray);
 	};
 
-	/*-----------------------------------------*/
-
 	//CREATING A NEW TODO LIST
 	useEffect(() => {
 		fetch("https://assets.breatheco.de/apis/fake/todos/user/jesuscano", {
@@ -53,7 +51,7 @@ const Home = () => {
 			.catch(error => {
 				setError(error);
 			});
-	}, [items]);
+	});
 
 	//GETTING THE ITEMS INSIDE THE API
 	useEffect(() => {
@@ -72,71 +70,6 @@ const Home = () => {
 			});
 	}, []);
 
-	/*
-	const[list, setList] = useState([]);
-	const[error, setError] = useState(""); 
-
-	CUANDO NACE: 
-
-	GET -> recibe datos
-			POST -> guarda datos y recibe respuesta
-	PUT -> envia y puede recibir datos
-	DELETE -> solo elimina
-	PATCH -> envia y recibe datos (actualiza)
-
-	SOLO UNA PETICIÓN A LA VEZ, UNA DETRÁS DE LA OTRA
-
-
-		useEffect(() => {
-			fetch(url API, {
-				method: "GET"; //el tipo de método, uno solo por llamada //el GET solo recibe
-				headers: {"Accept: "application/json"} //los datos que quiero obtener son JSON
-				//cuando quiera enviar un json poner header content type
-			}).then((response) => {
-				response.json(); //convierto la respuesta en json
-			}).then((data) => {
-				setList(data); //que todo va bien, convierto el json en lista
-			}).catch((err => {
-				setError(String(err)); //que todo va mal, devuelvo un error
-			})
-
-		}, []); --> dependencias listas vacia
-
-		en el return del componente
-
-		error.length == 0 ?
-			<ul>
-				list.map (val, i) => <li key=i}><{value}</li>
-			</ul>
-		: 
-		<li>{error}</li>
-
-
-CUANDO EL COMPONENTE MUTA/RENDERIZA COMPONENTE, CADA VEZ QUE CAMBIA UN USETATE: 
-
-		useEffect(() => {
-			
-		});
-
-
-CUANDO LA DEPENDENCIA CAMBIA: --> llamando al modificador
-
-		useEffect(() => {
-
-			if(list.length > 5) 
-				console.log("Hay muchas tareas por hacer");
-			
-		});
-
- CUANDO MUERE: 
-
-		useEffect(() => {
-			return () => {
-
-			}
-		});
-
- */
 	return (
 		<>
 			<div className="container-fluid body d-flex align-items-center justify-content-center">
@@ -162,17 +95,21 @@ CUANDO LA DEPENDENCIA CAMBIA: --> llamando al modificador
 							}}
 							value={value}
 						/>
-						<ul>
-							{items.map((item, index) => {
-								return (
-									<Item
-										name={item.label}
-										key={index}
-										click={deleteTask}
-									/>
-								);
-							})}
-						</ul>
+						{error.length == 0 ? (
+							<ul>
+								{items.map((item, index) => {
+									return (
+										<Item
+											name={item.label}
+											key={index}
+											click={deleteTask}
+										/>
+									);
+								})}
+							</ul>
+						) : (
+							<li>{error}</li>
+						)}
 					</div>
 				</div>
 			</div>
@@ -181,3 +118,64 @@ CUANDO LA DEPENDENCIA CAMBIA: --> llamando al modificador
 };
 
 export default Home;
+
+/*-------------------------------------------------------------------*/
+/*ANNOTATIONS
+
+	const[list, setList] = useState([]);
+	const[error, setError] = useState(""); 
+
+	CUANDO NACE: 
+
+	GET -> recibe datos
+	POST -> guarda datos y recibe respuesta
+	PUT -> envia y puede recibir datos
+	DELETE -> solo elimina
+	PATCH -> envia y recibe datos (actualiza)
+
+	SOLO UNA PETICIÓN A LA VEZ, UNA DETRÁS DE LA OTRA
+
+	useEffect(() => {
+		fetch(url API, {
+			method: "GET"; //el tipo de método, uno solo por llamada //el GET solo recibe
+			headers: {"Accept: "application/json"} //los datos que quiero obtener son JSON
+			//cuando quiera enviar un json poner header content type
+		}).then((response) => {
+			response.json(); //convierto la respuesta en json
+		}).then((data) => {
+			setList(data); //que todo va bien, convierto el json en lista
+		}).catch((err => {
+			setError(String(err)); //que todo va mal, devuelvo un error
+		})
+
+	}, []); --> dependencias listas vacia
+
+	en el return del componente
+
+	error.length == 0 ?
+		<ul>
+			list.map (val, i) => <li key=i}><{value}</li>
+		</ul>
+	: 
+	<li>{error}</li>
+
+
+	1- CUANDO EL COMPONENTE MUTA/RENDERIZA COMPONENTE, CADA VEZ QUE CAMBIA UN USETATE: useEffect(() => {});
+	2- CUANDO LA DEPENDENCIA CAMBIA: --> llamando al modificador
+
+		useEffect(() => {
+
+			if(list.length > 5) 
+				console.log("Hay muchas tareas por hacer");
+			
+		});
+
+ 	3- CUANDO MUERE: 
+
+		useEffect(() => {
+			return () => {
+
+			}
+		});
+
+ */
