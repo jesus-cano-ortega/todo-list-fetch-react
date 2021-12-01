@@ -1,22 +1,24 @@
-# <img src="https://github.com/jesus-cano-ortega/js-introduction-exercises/blob/main/assets/resources/img/face.png" width="45" alt="Personal Logo"> To-Do List with React
+# <img src="https://github.com/jesus-cano-ortega/js-introduction-exercises/blob/main/assets/resources/img/face.png" width="45" alt="Personal Logo"> To-Do List with React (Fetch)
 
 <p>
   <a href="https://silver-zebra-yvuvil9a.ws-eu17.gitpod.io/"><img src="https://raw.githubusercontent.com/4GeeksAcademy/react-hello/master/open-in-gitpod.svg?sanitize=true" />
   </a>
 </p>
 
-The objective of this project is to display a To-Do List using React. The main objective of this project is to put in practice the React skills
-learned and the use of Hooks (useState) and logic inside components. 
+The objective of this project is to display a To-Do List with React and using Fetch to communicate wiht an API. The Fetch API provides a JavaScript interface for accessing and manipulating parts of the HTTP pipeline, such as requests and responses. 
 
-React improves the creation of custom components, which you can render throughout your web-app using the ReactDOM.render() method. A custom component allows you to divide and conquer, separating logical and visual challenges into smaller pieces- giving you greater control over the display and functionalities of each part of the web-app you are developing.
+To put it more simply; Fetch is an interface for fetching resources.
 
 ### Instructions
 
-1. The tasks are added when the user press enter on the keyboard or you can have your own button.
-2. The delete icon shows only when the task is hovered.
-3. The use can add as many tasks as it wants.
-4. When there is no tasks the list should "No tasks, add a task"
-5. There is no way to update a task, the user will ahve to delete and create again.
+- Make your to-do list sync with the backend API every time a task is added or deleted.
+- Add a clean all tasks button that will delete the entire list from the server and update the empty list on the front-end.
+
+There are 3 critical moments in the application timeline (a.k.a. The runtime) to focus on your integration:
+
+- After the list loads empty for the first time (componentDidMount): you should fetch (GET) the data from the API and update the tasks when the information finally arrives.
+- When a new task is added: You should PUT the new list on the server.
+- When a task is deleted: You should PUT the new list on the server.
 
 ##### REMEMBER: 
 
