@@ -5,12 +5,14 @@ const Home = () => {
 	//Hooks
 	const [value, setValue] = useState("");
 	const [items, setItems] = useState([]);
+	const [error, setError] = useState("");
 
 	//Function that creates a new item inside the array when press Enter
 	const createNewTask = ev => {
 		if (ev.key == "Enter" && value != "") {
 			setItems(items => [...items, { label: value, done: false }]);
 			setValue("");
+			saveData("PUT", JSON.stringify(items));
 		}
 	};
 
@@ -19,7 +21,43 @@ const Home = () => {
 		let newArray = [...items];
 		newArray.splice(index, 1);
 		setItems(newArray);
+		saveData("PUT", JSON.stringify(items));
 	};
+
+	//ADDING NEW ITEMS TO THE API
+	const saveData = () => {
+		fetch("https://assets.breatheco.de/apis/fake/todos/user/jesuscano", {
+			method: "PUT",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(items)
+		})
+			.then(response => {
+				return response.json();
+			})
+			.then(data => {
+				console.log(data);
+			})
+			.catch(error => {
+				setError(error);
+			});
+	};
+
+	//GETTING THE ITEMS INSIDE THE API
+	useEffect(() => {
+		fetch("https://assets.breatheco.de/apis/fake/todos/user/jesuscano", {
+			method: "GET",
+			headers: { "Content-Type": "application/json" }
+		})
+			.then(response => {
+				return response.json();
+			})
+			.then(data => {
+				setItems(data);
+			})
+			.catch(error => {
+				setError(error);
+			});
+	}, []);
 
 	return (
 		<>
@@ -46,17 +84,21 @@ const Home = () => {
 							}}
 							value={value}
 						/>
-						<ul>
-							{items.map((item, index) => {
-								return (
-									<Item
-										name={item.label}
-										key={index}
-										click={deleteTask}
-									/>
-								);
-							})}
-						</ul>
+						{error.length == 0 ? (
+							<ul>
+								{items.map((item, index) => {
+									return (
+										<Item
+											name={item.label}
+											key={index}
+											click={deleteTask}
+										/>
+									);
+								})}
+							</ul>
+						) : (
+							<li>{error}</li>
+						)}
 					</div>
 				</div>
 			</div>
